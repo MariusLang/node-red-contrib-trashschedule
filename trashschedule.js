@@ -1,41 +1,29 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable func-names */
 module.exports = function (RED) {
   function trashschedule(config) {
     RED.nodes.createNode(this, config);
-    let context = this.context();
-    let node = this;
+    // let context = this.context();
+    const node = this;
 
-    this.on('input', function (msg) {
-      let payload = msg.payload;
+    const csvString = node.csvString;
+
+    this.on('input', (msg) => {
+      const payload = msg.payload;
       switch (payload) {
-        case "all":
-          sendAll(); // outputs all holidays
+        case '123':
+          node.send({ payload: csvString });
           break;
-        case "isTodayHoliday":
-          isTodayHoliday(); // outputs boolean wether today is holiday
-          break;
-        case "nextHoliday":
-          sendNextHoliday(); // outputs next holiday
-          break;
-        case "nextThreeHolidays":
-          sendNextThreeHolidays(); // outputs next 3 holidays
-          break;
-        case "isChristmasTime":
-          isChristmasTime(); // outputs wether today is Christmas time
-          break;
-        case "daysUntilNextHoliday": // outputs days until next holiday
-          daysUntilNextHoliday();
-          break;
-        case "123":
-          node.send({ payload: ownHolidays });
+        default:
           break;
       }
     });
 
-    this.on('close', function () {
-      if (interval) {
+    this.on('close', () => {
+      /* if (interval) {
         clearInterval(dailyInterval);
-      }
+      } */
     });
   }
-  RED.nodes.registerType("trashschedule", trashschedule);
+  RED.nodes.registerType('trashschedule', trashschedule);
 };

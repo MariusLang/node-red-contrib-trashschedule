@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <script type="text/html" data-template-name="trashschedule">
   <div class="form-row">
+    <label for="node-input-csvString"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-csvString" placeholder="ics">
+  </div>
+
+  <hr>
+
+  <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
-</div>
+  </div>
 </script>
 
-<script type="text/html" data-help-name="feiertage">
+<script type="text/html" data-help-name="trashschedule">
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('feiertage', {
-      category: 'calendar',
-      color: "#339900",
-      inputLabels: "",
-      outputLabels: "",
-      inputs: 1,
-      outputs: 1,
-      icon: "icon.svg",
-      defaults: {
-          name: { value: "Trash Schedule", required: true }
-      },
+  RED.nodes.registerType('trashschedule', {
+    category: 'calendar',
+    color: "#339900",
+    inputLabels: "",
+    outputLabels: "",
+    inputs: 1,
+    outputs: 1,
+    icon: "icon.png",
+    defaults: {
+      name: { value: "Trash Schedule", required: true },
+      csvString: { value: "", required: true },
+    },
+    label: function () {
+      return this.name || "feiertage";
+    },
   });
 </script>
