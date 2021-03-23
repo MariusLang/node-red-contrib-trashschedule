@@ -1,12 +1,15 @@
+/* eslint-disable no-shadow */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable func-names */
 module.exports = function (RED) {
   function trashschedule(config) {
     RED.nodes.createNode(this, config);
-    // let context = this.context();
+    // const context = this.context();
     const node = this;
 
-    const csvString = node.csvString;
+    const csvString = config.csvString;
+    // eslint-disable-next-line no-unused-vars
+    const trashschedule = config.trashschedule;
 
     this.on('input', (msg) => {
       const payload = msg.payload;

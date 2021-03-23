@@ -5,6 +5,8 @@
     <input type="text" id="node-input-csvString" placeholder="ics">
   </div>
 
+  <ol id="list" class="list"></ol>
+
   <hr>
 
   <div class="form-row">
@@ -28,9 +30,91 @@
     defaults: {
       name: { value: "Trash Schedule", required: true },
       csvString: { value: "", required: true },
+      trashschedule: { value: [], required: false },
     },
     label: function () {
       return this.name || "feiertage";
     },
+    oneditprepare: function () {
+      const node = this;
+
+      $('#list').editableList({
+        sortable: true,
+        sort: function (dataA, dataB) {
+          return dataA.index - dataB.index;
+        },
+        addButton: true,
+        height: 500,
+        addItem: function (containerRow, index, data) {
+          containerRow.css({ overflow: 'hidden', whiteSpace: 'nowrap' });
+          const row = $('<div/>').appendTo(containerRow);
+          const day = $('<input/>', {
+            class: 'node-input-item-day',
+            width: '50px',
+            type: 'number',
+            value: (data.day || '1'),
+            required: true,
+          }).appendTo(row);
+          const month = $('<input/>', {
+            class: 'node-input-item-month',
+            width: '50px',
+            type: 'number',
+            value: (data.month || '1'),
+            required: true,
+          }).appendTo(row);
+          const year = $('<input/>', {
+            class: 'node-input-item-year',
+            width: '80px',
+            type: 'number',
+            value: (data.year || '2021'),
+            required: true,
+          }).appendTo(row);
+          const name = $('<input/>', {
+            class: 'node-input-item-name',
+            type: 'text',
+            value: (data.name || ''),
+            required: true,
+          }).appendTo(row);
+          saveHolidays(node);
+        },
+        removable: true,
+      });
+
+      loadTrashschedule(node);
+    },
+    oneditsave: function () {
+      const node = this;
+
+      saveTrashschedule(node);
+    },
   });
+
+  function getData(rule) {
+    return {
+      name: rule.find('.node-input-item-name').val(),
+      day: parseInt(rule.find('.node-input-item-day').val()),
+      month: parseInt(rule.find('.node-input-item-month').val()),
+      year: parseInt(rule.find('.node-input-item-year').val()),
+    }
+  }
+
+  function saveTrashschedule(node) {
+    node.trashschedule = [];
+    const trashscheduleArr = $('#list').editableList('items');
+    if (trashscheduleArr) {
+      trashscheduleArr.each(function (_i) {
+        const rule = this;
+        node.trashschedule.push(getData(rule));
+      });
+    }
+    console.log(node.trashschedule);
+  }
+
+  function loadTrashschedule(node) {
+    if (node.trashschedule) {
+      node.trashschedule.forEach(item => {
+        $('#list').editableList('addItem', item);
+      });
+    }
+  }
 </script>
