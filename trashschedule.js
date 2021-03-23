@@ -7,15 +7,59 @@ module.exports = function (RED) {
     // const context = this.context();
     const node = this;
 
-    const csvString = config.csvString;
-    // eslint-disable-next-line no-unused-vars
     const trashschedule = config.trashschedule;
+
+    let currentDay;
+    let currentMonth;
+    let currentYear;
+    let currentHour;
+    let currentMinute;
+
+    function setCurrentDate() {
+      const date = new Date();
+      currentDay = date.getDate();
+      currentMonth = date.getMonth() + 1;
+      currentYear = date.getFullYear();
+      currentHour = date.getHours();
+      currentMinute = date.getMinutes();
+    }
+
+    function checkTrashschedule() {
+      let result;
+      for (let index = 0; index < trashschedule.length; index += 1) {
+        const trashscheduleObject = trashschedule[index];
+        const trashscheduleName = trashscheduleObject.name;
+        const trashscheduleDay = trashscheduleObject.day;
+        const trashscheduleMonth = trashscheduleObject.month;
+        const trashScheduleYear = trashscheduleObject.year;
+
+        if (trashScheduleYear === currentYear
+          && trashscheduleMonth === currentMonth
+          && trashscheduleDay === currentDay) {
+          result = trashscheduleName;
+          break;
+        } else {
+          result = false;
+        }
+      }
+      node.send({ payload: result });
+    }
+
+    const dailyInterval = setInterval(() => {
+      setCurrentDate();
+      if (currentHour === 0 && currentMinute === 1) {
+        checkTrashschedule();
+      }
+    });
 
     this.on('input', (msg) => {
       const payload = msg.payload;
       switch (payload) {
         case '123':
-          node.send({ payload: csvString });
+          node.send({ payload: trashschedule });
+          break;
+        case '1234':
+          checkTrashschedule();
           break;
         default:
           break;
@@ -23,9 +67,7 @@ module.exports = function (RED) {
     });
 
     this.on('close', () => {
-      /* if (interval) {
-        clearInterval(dailyInterval);
-      } */
+      clearInterval(dailyInterval);
     });
   }
   RED.nodes.registerType('trashschedule', trashschedule);
