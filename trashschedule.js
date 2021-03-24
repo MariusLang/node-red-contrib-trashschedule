@@ -4,7 +4,6 @@
 module.exports = function (RED) {
   function trashschedule(config) {
     RED.nodes.createNode(this, config);
-    // const context = this.context();
     const node = this;
 
     const trashschedule = config.trashschedule;
