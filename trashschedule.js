@@ -54,10 +54,7 @@ module.exports = function (RED) {
     this.on('input', (msg) => {
       const payload = msg.payload;
       switch (payload) {
-        case '123':
-          node.send({ payload: trashschedule });
-          break;
-        case '1234':
+        case 'checkTrashschedule':
           checkTrashschedule();
           break;
         default:

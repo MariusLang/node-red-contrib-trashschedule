@@ -16,19 +16,19 @@
 <script type="text/javascript">
   RED.nodes.registerType('trashschedule', {
     category: 'calendar',
-    color: "#339900",
-    inputLabels: "",
-    outputLabels: "",
+    color: '#4675c2',
+    inputLabels: '',
+    outputLabels: '',
     inputs: 1,
     outputs: 1,
-    icon: "icon.svg",
+    icon: 'icon.svg',
     defaults: {
-      name: { value: "Trash Schedule", required: true },
-      csvString: { value: "", required: true },
+      name: { value: 'Trash Schedule', required: true },
+      csvString: { value: '', required: true },
       trashschedule: { value: [], required: false },
     },
     label: function () {
-      return this.name || "feiertage";
+      return this.name || 'feiertage';
     },
     oneditprepare: function () {
       const node = this;
@@ -90,7 +90,7 @@
       day: parseInt(rule.find('.node-input-item-day').val()),
       month: parseInt(rule.find('.node-input-item-month').val()),
       year: parseInt(rule.find('.node-input-item-year').val()),
-    }
+    };
   }
 
   function saveTrashschedule(node) {
