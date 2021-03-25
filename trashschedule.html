@@ -87,9 +87,9 @@
   function getData(rule) {
     return {
       name: rule.find('.node-input-item-name').val(),
-      day: parseInt(rule.find('.node-input-item-day').val()),
-      month: parseInt(rule.find('.node-input-item-month').val()),
-      year: parseInt(rule.find('.node-input-item-year').val()),
+      day: parseInt(rule.find('.node-input-item-day').val() <= 31 && parseInt(rule.find('.node-input-item-day').val() >= 1 ? parseInt(rule.find('.node-input-item-day').val()) : 1)),
+      month: parseInt(rule.find('.node-input-item-month').val() <= 12 && parseInt(rule.find('.node-input-item-month').val() >= 1 ? parseInt(rule.find('.node-input-item-month').val()) : 1)),
+      year: parseInt(rule.find('.node-input-item-year').val() >= 1 ? parseInt(rule.find('.node-input-item-year').val()) : new Date().getFullYear()),
     };
   }
 
