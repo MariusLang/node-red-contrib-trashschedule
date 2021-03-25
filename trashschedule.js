@@ -54,6 +54,37 @@ module.exports = function (RED) {
       }
     }
 
+    function sendNextThreeTrashEvents() {
+      sortTrashschedule();
+      for (let index = 0; index < trashschedule.length; index += 1) {
+        if (new Date(
+          trashschedule[index].year,
+          trashschedule[index].month,
+          trashschedule[index].day,
+        ).valueOf() < new Date(currentYear, currentMonth, currentDay).valueOf()) {
+          trashschedule[index - 1].daysleft = (new Date(
+            trashschedule[index - 1].year,
+            trashschedule[index - 1].month,
+            trashschedule[index - 1].day,
+          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          trashschedule[index - 2].daysleft = (new Date(
+            trashschedule[index - 2].year,
+            trashschedule[index - 2].month,
+            trashschedule[index - 2].day,
+          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          trashschedule[index - 3].daysleft = (new Date(
+            trashschedule[index - 3].year,
+            trashschedule[index - 3].month,
+            trashschedule[index - 3].day,
+          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          node.send({ payload: trashschedule[index - 1] });
+          node.send({ payload: trashschedule[index - 2] });
+          node.send({ payload: trashschedule[index - 3] });
+          break;
+        }
+      }
+    }
+
     function checkTrashschedule() {
       sortTrashschedule();
       let result;
@@ -65,7 +96,8 @@ module.exports = function (RED) {
 
         if (trashScheduleYear === currentYear
           && trashscheduleMonth === currentMonth
-          && trashscheduleDay === currentDay) {
+          && trashscheduleDay === currentDay
+          && currentHour < 12) {
           trashscheduleObject.daysleft = 0;
           result = trashscheduleObject;
           break;
@@ -92,6 +124,9 @@ module.exports = function (RED) {
       switch (payload) {
         case 'checkTrashschedule':
           checkTrashschedule();
+          break;
+        case 'checkNextThree':
+          sendNextThreeTrashEvents();
           break;
         default:
           break;
