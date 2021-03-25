@@ -23,11 +23,42 @@ module.exports = function (RED) {
       currentMinute = date.getMinutes();
     }
 
+    function sortTrashschedule() {
+      trashschedule.sort((a, b) => {
+        if (new Date(a.year, a.month, a.day) > new Date(b.year, b.month, b.day)) {
+          return -1;
+        }
+        if (new Date(a.year, a.month, a.day) < new Date(b.year, b.month, b.day)) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+    function sendNextTrashEvent() {
+      sortTrashschedule();
+      for (let index = 0; index < trashschedule.length; index += 1) {
+        if (new Date(
+          trashschedule[index].year,
+          trashschedule[index].month,
+          trashschedule[index].day,
+        ).valueOf() < new Date(currentYear, currentMonth, currentDay).valueOf()) {
+          trashschedule[index - 1].daysleft = (new Date(
+            trashschedule[index - 1].year,
+            trashschedule[index - 1].month,
+            trashschedule[index - 1].day,
+          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          node.send({ payload: trashschedule[index - 1] });
+          break;
+        }
+      }
+    }
+
     function checkTrashschedule() {
+      sortTrashschedule();
       let result;
       for (let index = 0; index < trashschedule.length; index += 1) {
         const trashscheduleObject = trashschedule[index];
-        const trashscheduleName = trashscheduleObject.name;
         const trashscheduleDay = trashscheduleObject.day;
         const trashscheduleMonth = trashscheduleObject.month;
         const trashScheduleYear = trashscheduleObject.year;
@@ -35,13 +66,18 @@ module.exports = function (RED) {
         if (trashScheduleYear === currentYear
           && trashscheduleMonth === currentMonth
           && trashscheduleDay === currentDay) {
-          result = trashscheduleName;
+          trashscheduleObject.daysleft = 0;
+          result = trashscheduleObject;
           break;
         } else {
           result = false;
         }
       }
-      node.send({ payload: result });
+      if (!result) {
+        sendNextTrashEvent();
+      } else {
+        node.send({ payload: result });
+      }
     }
 
     const dailyInterval = setInterval(() => {
