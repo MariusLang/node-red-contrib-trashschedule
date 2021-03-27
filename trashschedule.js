@@ -38,9 +38,41 @@ module.exports = function (RED) {
       });
     }
 
+    function validateTrashschedule() {
+      sortTrashschedule();
+      let result;
+      for (let index = 0; index < trashschedule.length; index += 1) {
+        const trashscheduleElement = trashschedule[index];
+        const trashscheduleYear = trashscheduleElement.year;
+        const trashscheduleMonth = trashscheduleElement.month - 1;
+        const trashscheduleDay = trashscheduleElement.day;
+        if (new Date(
+          trashscheduleYear,
+          trashscheduleMonth,
+          trashscheduleDay,
+        ).valueOf() - new Date(
+          currentYear,
+          currentMonth,
+          currentDay,
+        ).valueOf() >= 0) {
+          result = true;
+          break;
+        } else {
+          result = false;
+        }
+      }
+      return result;
+    }
+
     // send next three trashschedule events related to current date
     function sendNextThreeTrashEvents() {
-      sortTrashschedule();
+      const validation = validateTrashschedule();
+      if (!validation) {
+        node.send({ payload: 'trashschedule events are outdated' });
+        return;
+      }
+
+      const outputArr = [];
       for (let index = 0; index < trashschedule.length; index += 1) {
         const trashscheduleElement = trashschedule[index];
         const trashscheduleYear = trashscheduleElement.year;
@@ -51,7 +83,8 @@ module.exports = function (RED) {
           && trashscheduleDay === currentDay) {
           if (currentHour < skipHour) {
             trashscheduleElement.daysleft = 0;
-            node.send({ payload: trashscheduleElement });
+            outputArr[0] = trashscheduleElement;
+
             trashschedule[index - 1].daysLeft = Math.round((new Date(
               trashschedule[index - 1].year,
               trashschedule[index - 1].month - 1,
@@ -61,7 +94,8 @@ module.exports = function (RED) {
               currentMonth,
               currentDay,
             ).valueOf()) / 86400000);
-            node.send({ payload: trashschedule[index - 1] });
+            outputArr[1] = trashschedule[index - 1];
+
             trashschedule[index - 2].daysLeft = Math.round((new Date(
               trashschedule[index - 2].year,
               trashschedule[index - 2].month - 1,
@@ -71,7 +105,8 @@ module.exports = function (RED) {
               currentMonth,
               currentDay,
             ).valueOf()) / 86400000);
-            node.send({ payload: trashschedule[index - 2] });
+            outputArr[2] = trashschedule[index - 2];
+
             break;
           } else {
             trashschedule[index - 1].daysleft = Math.round((new Date(
@@ -83,7 +118,8 @@ module.exports = function (RED) {
               currentMonth,
               currentDay,
             ).valueOf()) / 86400000);
-            node.send({ payload: trashschedule[index - 1] });
+            outputArr[0] = trashschedule[index - 1];
+
             trashschedule[index - 2].daysleft = Math.round((new Date(
               trashschedule[index - 2].year,
               trashschedule[index - 2].month - 1,
@@ -93,7 +129,8 @@ module.exports = function (RED) {
               currentMonth,
               currentDay,
             ).valueOf()) / 86400000);
-            node.send({ payload: trashschedule[index - 2] });
+            outputArr[1] = trashschedule[index - 2];
+
             trashschedule[index - 3].daysleft = Math.round((new Date(
               trashschedule[index - 3].year,
               trashschedule[index - 3].month - 1,
@@ -103,16 +140,23 @@ module.exports = function (RED) {
               currentMonth,
               currentDay,
             ).valueOf()) / 86400000);
-            node.send({ payload: trashschedule[index - 3] });
+            outputArr[2] = trashschedule[index - 3];
+
             break;
           }
         }
       }
+      node.send({ payload: outputArr });
     }
 
     // check wether today is trashschedule event
     function checkTrashschedule() {
-      sortTrashschedule();
+      const validation = validateTrashschedule();
+      if (!validation) {
+        node.send({ payload: 'trashschedule events are outdated' });
+        return;
+      }
+
       for (let index = 0; index < trashschedule.length; index += 1) {
         const trashscheduleElement = trashschedule[index];
         const trashscheduleYear = trashscheduleElement.year;
@@ -147,14 +191,16 @@ module.exports = function (RED) {
       const payload = msg.payload;
       switch (payload) {
         case 'checkTrashschedule':
-          // eslint-disable-next-line no-use-before-define
           checkTrashschedule();
           break;
         case 'checkNextThree':
-          // eslint-disable-next-line no-use-before-define
           sendNextThreeTrashEvents();
           break;
+        case '123':
+          validateTrashschedule();
+          break;
         default:
+          checkTrashschedule();
           break;
       }
     });
