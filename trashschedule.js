@@ -38,80 +38,74 @@ module.exports = function (RED) {
       });
     }
 
-    // send next trashschedule event related to current date
-    function sendNextTrashEvent() {
+    // send next three trashschedule events related to current date
+    function sendNextThreeTrashEvents() {
       sortTrashschedule();
       for (let index = 0; index < trashschedule.length; index += 1) {
         const trashscheduleElement = trashschedule[index];
         const trashscheduleYear = trashscheduleElement.year;
         const trashscheduleMonth = trashscheduleElement.month - 1;
         const trashscheduleDay = trashscheduleElement.day;
-        if (((new Date(
-          trashscheduleYear,
-          trashscheduleMonth,
-          trashscheduleDay,
-        ).valueOf() - new Date(
-          currentYear,
-          currentMonth,
-          currentDay,
-          currentHour,
-          currentMinute,
-        ).valueOf()) / 86400000) < 0) {
-          trashschedule[index - 1].daysleft = ((new Date(
-            trashschedule[index - 1].year,
-            trashschedule[index - 1].month - 1,
-            trashschedule[index - 1].day,
-          ).valueOf() - new Date(
-            currentYear,
-            currentMonth,
-            currentDay,
-          ).valueOf()) / 86400000).toFixed(0);
-          node.send({ payload: trashschedule[index - 1] });
-          break;
-        }
-      }
-    }
-
-    // send next three trashschedule events related to current date
-    function sendNextThreeTrashEvents() {
-      sortTrashschedule();
-      for (let index = 0; index < trashschedule.length; index += 1) {
-        if (new Date(
-          trashschedule[index].year,
-          trashschedule[index].month - 1,
-          trashschedule[index].day,
-        ).valueOf() < new Date(currentYear, currentMonth, currentDay).valueOf()) {
-          trashschedule[index - 1].daysleft = ((new Date(
-            trashschedule[index - 1].year,
-            trashschedule[index - 1].month - 1,
-            trashschedule[index - 1].day,
-          ).valueOf() - new Date(
-            currentYear,
-            currentMonth,
-            currentDay,
-          ).valueOf()) / 86400000).toFixed(0);
-          trashschedule[index - 2].daysleft = ((new Date(
-            trashschedule[index - 2].year,
-            trashschedule[index - 2].month - 1,
-            trashschedule[index - 2].day,
-          ).valueOf() - new Date(
-            currentYear,
-            currentMonth,
-            currentDay,
-          ).valueOf()) / 86400000).toFixed(0);
-          trashschedule[index - 3].daysleft = ((new Date(
-            trashschedule[index - 3].year,
-            trashschedule[index - 3].month - 1,
-            trashschedule[index - 3].day,
-          ).valueOf() - new Date(
-            currentYear,
-            currentMonth,
-            currentDay,
-          ).valueOf()) / 86400000).toFixed(0);
-          node.send({ payload: trashschedule[index - 1] });
-          node.send({ payload: trashschedule[index - 2] });
-          node.send({ payload: trashschedule[index - 3] });
-          break;
+        if (trashscheduleYear === currentYear
+          && trashscheduleMonth === currentMonth
+          && trashscheduleDay === currentDay) {
+          if (currentHour < skipHour) {
+            trashscheduleElement.daysleft = 0;
+            node.send({ payload: trashscheduleElement });
+            trashschedule[index - 1].daysLeft = Math.round((new Date(
+              trashschedule[index - 1].year,
+              trashschedule[index - 1].month - 1,
+              trashschedule[index - 1].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 1] });
+            trashschedule[index - 2].daysLeft = Math.round((new Date(
+              trashschedule[index - 2].year,
+              trashschedule[index - 2].month - 1,
+              trashschedule[index - 2].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 2] });
+            break;
+          } else {
+            trashschedule[index - 1].daysleft = Math.round((new Date(
+              trashschedule[index - 1].year,
+              trashschedule[index - 1].month - 1,
+              trashschedule[index - 1].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 1] });
+            trashschedule[index - 2].daysleft = Math.round((new Date(
+              trashschedule[index - 2].year,
+              trashschedule[index - 2].month - 1,
+              trashschedule[index - 2].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 2] });
+            trashschedule[index - 3].daysleft = Math.round((new Date(
+              trashschedule[index - 3].year,
+              trashschedule[index - 3].month - 1,
+              trashschedule[index - 3].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 3] });
+            break;
+          }
         }
       }
     }
@@ -119,36 +113,32 @@ module.exports = function (RED) {
     // check wether today is trashschedule event
     function checkTrashschedule() {
       sortTrashschedule();
-      /*
-      result:
-        - no trashschedule event tody --> false
-        - trashschedule event tody --> send trashschedule object of today's event
-      */
-      let result;
       for (let index = 0; index < trashschedule.length; index += 1) {
         const trashscheduleElement = trashschedule[index];
         const trashscheduleYear = trashscheduleElement.year;
         const trashscheduleMonth = trashscheduleElement.month - 1;
         const trashscheduleDay = trashscheduleElement.day;
-        if (currentHour < skipHour) {
-          if (trashscheduleYear === currentYear
-            && trashscheduleMonth === currentMonth
-            && trashscheduleDay === currentDay) {
-            trashschedule[index].daysleft = 0;
-            result = trashschedule[index];
+        if (trashscheduleYear === currentYear
+          && trashscheduleMonth === currentMonth
+          && trashscheduleDay === currentDay) {
+          if (currentHour < skipHour) {
+            trashscheduleElement.daysleft = 0;
+            node.send({ payload: trashscheduleElement });
+            break;
+          } else {
+            trashschedule[index - 1].daysleft = Math.round((new Date(
+              trashschedule[index - 1].year,
+              trashschedule[index - 1].month - 1,
+              trashschedule[index - 1].day,
+            ).valueOf() - new Date(
+              currentYear,
+              currentMonth,
+              currentDay,
+            ).valueOf()) / 86400000);
+            node.send({ payload: trashschedule[index - 1] });
             break;
           }
-        } else {
-          result = false;
         }
-      }
-      // check result
-      if (!result) {
-        // result --> no trashschedule event tody
-        sendNextTrashEvent();
-      } else {
-        // result --> trashschedule event tody
-        node.send({ payload: result });
       }
     }
 
