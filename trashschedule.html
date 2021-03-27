@@ -7,9 +7,34 @@
   <hr>
 
   <div class="form-row">
-    <label for="node-input-skipHour"><i class="fa fa-tag"></i> Skip current day after hour x</label>
-    <input type="text" id="node-input-skipHour" placeholder="Skip current day after hour x" type="number">
-  </div>
+    <label for="node-input-skipHour"><i class="fa fa-clock-o"></i> Skip current day after hour x</label>
+    <i class="fa fa-calendar"></i> <select style="width: 50px;" id="node-input-skipHour">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+    </select>
+</div>
 
   <hr>
 
@@ -32,7 +57,7 @@
     <li><p><b>3. field</b> event year (yyyy example: 2021)</p></li>
     <li><p><b>4. field</b> event name</p></li>
   </ul>
-  <p>The field "skip current day after hour x" means the hour after which the current trashschedule event will be skipped, if there is any today.</p>
+  <p>Pick the hour after which you want to skip todays trashschedule event in "skip current day after hour x" dropdown.</p>
   <p>The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.</p>
 
   <h3><span style="color: #4675c2">Input</span></h3>

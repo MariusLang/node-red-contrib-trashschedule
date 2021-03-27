@@ -29,7 +29,7 @@ Add your trashschedule events into the list.
 |3   |event year (yyyy example: 2021)|
 |4   |event name                     |
 
-The field "skip current day after hour x" means the hour after which the current trashschedule event will be skipped, if there is any today.
+Pick the hour after which you want to skip todays trashschedule event in "skip current day after hour x" dropdown.
 
 ![skip_example](img/skip_example.PNG)
 
