@@ -2,6 +2,11 @@
 <script type="text/html" data-template-name="trashschedule">
   <ol id="list" class="list"></ol>
 
+  <div class="form-row">
+    <label for="node-input-skipHour"><i class="fa fa-tag"></i> Skip current day after hour x</label>
+    <input type="text" id="node-input-skipHour" placeholder="Skip current day after hour x" type="number">
+  </div>
+
   <hr>
 
   <div class="form-row">
@@ -24,8 +29,8 @@
     icon: 'icon.svg',
     defaults: {
       name: { value: 'Trash Schedule', required: true },
-      csvString: { value: '', required: true },
       trashschedule: { value: [], required: false },
+      skipHour: { value: 12, required: true },
     },
     label: function () {
       return this.name || 'feiertage';

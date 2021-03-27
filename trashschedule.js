@@ -7,22 +7,25 @@ module.exports = function (RED) {
     const node = this;
 
     const trashschedule = config.trashschedule;
+    const skipHour = config.skipHour;
 
-    let currentDay;
-    let currentMonth;
-    let currentYear;
-    let currentHour;
-    let currentMinute;
+    let currentDay; // current day 1 - 31
+    let currentMonth; // current month 0 - 11
+    let currentYear; // current year yyyy
+    let currentHour; // current hour hh
+    let currentMinute; // current minute mm
 
+    // refresh time vars
     function setCurrentDate() {
       const date = new Date();
       currentDay = date.getDate();
-      currentMonth = date.getMonth() + 1;
+      currentMonth = date.getMonth();
       currentYear = date.getFullYear();
       currentHour = date.getHours();
       currentMinute = date.getMinutes();
     }
 
+    // sort trashschedule array by yyyy, mm, dd
     function sortTrashschedule() {
       trashschedule.sort((a, b) => {
         if (new Date(a.year, a.month, a.day) > new Date(b.year, b.month, b.day)) {
@@ -35,48 +38,76 @@ module.exports = function (RED) {
       });
     }
 
+    // send next trashschedule event related to current date
     function sendNextTrashEvent() {
       sortTrashschedule();
       for (let index = 0; index < trashschedule.length; index += 1) {
-        if (new Date(
-          trashschedule[index].year,
-          trashschedule[index].month,
-          trashschedule[index].day,
-        ).valueOf() < new Date(currentYear, currentMonth, currentDay).valueOf()) {
-          trashschedule[index - 1].daysleft = (new Date(
+        const trashscheduleElement = trashschedule[index];
+        const trashscheduleYear = trashscheduleElement.year;
+        const trashscheduleMonth = trashscheduleElement.month - 1;
+        const trashscheduleDay = trashscheduleElement.day;
+        if (((new Date(
+          trashscheduleYear,
+          trashscheduleMonth,
+          trashscheduleDay,
+        ).valueOf() - new Date(
+          currentYear,
+          currentMonth,
+          currentDay,
+          currentHour,
+          currentMinute,
+        ).valueOf()) / 86400000) < 0) {
+          trashschedule[index - 1].daysleft = ((new Date(
             trashschedule[index - 1].year,
-            trashschedule[index - 1].month,
+            trashschedule[index - 1].month - 1,
             trashschedule[index - 1].day,
-          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          ).valueOf() - new Date(
+            currentYear,
+            currentMonth,
+            currentDay,
+          ).valueOf()) / 86400000).toFixed(0);
           node.send({ payload: trashschedule[index - 1] });
           break;
         }
       }
     }
 
+    // send next three trashschedule events related to current date
     function sendNextThreeTrashEvents() {
       sortTrashschedule();
       for (let index = 0; index < trashschedule.length; index += 1) {
         if (new Date(
           trashschedule[index].year,
-          trashschedule[index].month,
+          trashschedule[index].month - 1,
           trashschedule[index].day,
         ).valueOf() < new Date(currentYear, currentMonth, currentDay).valueOf()) {
-          trashschedule[index - 1].daysleft = (new Date(
+          trashschedule[index - 1].daysleft = ((new Date(
             trashschedule[index - 1].year,
-            trashschedule[index - 1].month,
+            trashschedule[index - 1].month - 1,
             trashschedule[index - 1].day,
-          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
-          trashschedule[index - 2].daysleft = (new Date(
+          ).valueOf() - new Date(
+            currentYear,
+            currentMonth,
+            currentDay,
+          ).valueOf()) / 86400000).toFixed(0);
+          trashschedule[index - 2].daysleft = ((new Date(
             trashschedule[index - 2].year,
-            trashschedule[index - 2].month,
+            trashschedule[index - 2].month - 1,
             trashschedule[index - 2].day,
-          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
-          trashschedule[index - 3].daysleft = (new Date(
+          ).valueOf() - new Date(
+            currentYear,
+            currentMonth,
+            currentDay,
+          ).valueOf()) / 86400000).toFixed(0);
+          trashschedule[index - 3].daysleft = ((new Date(
             trashschedule[index - 3].year,
-            trashschedule[index - 3].month,
+            trashschedule[index - 3].month - 1,
             trashschedule[index - 3].day,
-          ).valueOf() - new Date(currentYear, currentMonth, currentDay).valueOf()) / 86400000;
+          ).valueOf() - new Date(
+            currentYear,
+            currentMonth,
+            currentDay,
+          ).valueOf()) / 86400000).toFixed(0);
           node.send({ payload: trashschedule[index - 1] });
           node.send({ payload: trashschedule[index - 2] });
           node.send({ payload: trashschedule[index - 3] });
@@ -85,33 +116,43 @@ module.exports = function (RED) {
       }
     }
 
+    // check wether today is trashschedule event
     function checkTrashschedule() {
       sortTrashschedule();
+      /*
+      result:
+        - no trashschedule event tody --> false
+        - trashschedule event tody --> send trashschedule object of today's event
+      */
       let result;
       for (let index = 0; index < trashschedule.length; index += 1) {
-        const trashscheduleObject = trashschedule[index];
-        const trashscheduleDay = trashscheduleObject.day;
-        const trashscheduleMonth = trashscheduleObject.month;
-        const trashScheduleYear = trashscheduleObject.year;
-
-        if (trashScheduleYear === currentYear
-          && trashscheduleMonth === currentMonth
-          && trashscheduleDay === currentDay
-          && currentHour < 12) {
-          trashscheduleObject.daysleft = 0;
-          result = trashscheduleObject;
-          break;
+        const trashscheduleElement = trashschedule[index];
+        const trashscheduleYear = trashscheduleElement.year;
+        const trashscheduleMonth = trashscheduleElement.month - 1;
+        const trashscheduleDay = trashscheduleElement.day;
+        if (currentHour < skipHour) {
+          if (trashscheduleYear === currentYear
+            && trashscheduleMonth === currentMonth
+            && trashscheduleDay === currentDay) {
+            trashschedule[index].daysleft = 0;
+            result = trashschedule[index];
+            break;
+          }
         } else {
           result = false;
         }
       }
+      // check result
       if (!result) {
+        // result --> no trashschedule event tody
         sendNextTrashEvent();
       } else {
+        // result --> trashschedule event tody
         node.send({ payload: result });
       }
     }
 
+    // set interval to update time and send trashschedule event at 00:01 o'clock
     const dailyInterval = setInterval(() => {
       setCurrentDate();
       if (currentHour === 0 && currentMinute === 1) {
@@ -119,6 +160,7 @@ module.exports = function (RED) {
       }
     });
 
+    // listen to node's input
     this.on('input', (msg) => {
       const payload = msg.payload;
       switch (payload) {
@@ -133,6 +175,7 @@ module.exports = function (RED) {
       }
     });
 
+    // listen wether node has been closed
     this.on('close', () => {
       clearInterval(dailyInterval);
     });
