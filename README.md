@@ -1,5 +1,5 @@
 ![banner](img/trashschedule_banner.svg)
-# Noder Red Trash Schedule
+# Node Red Trash Schedule
 
 [![NPM](https://img.shields.io/npm/v/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
 [![NPM_downloads](https://img.shields.io/npm/dm/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
