@@ -16,6 +16,36 @@
 </script>
 
 <script type="text/html" data-help-name="trashschedule">
+  <h3><span style="color: #4675c2">Details</span></h3>
+  <p>The NodeRED <b>node-red-contrib-trashschedule</b> Node is the ultimative Node to manage your Trashschedule events.</p>
+  <p>Please make sure that you've picked the right timezone into your system settings. Otherwise this node won't work as expected.</p>
+
+  <h3><span style="color: #4675c2">Settings</span></h3>
+  <p>Add your trashschedule events into the list.</p>
+  <ul>
+    <li><p><b>1. field</b> event day (1-31)</p></li>
+    <li><p><b>2. field</b> event month (1-12)</p></li>
+    <li><p><b>3. field</b> event year (yyyy example: 2021)</p></li>
+    <li><p><b>4. field</b> event name</p></li>
+  </ul>
+  <p>The field "skip current day after hour x" means the hour after which the current trashschedule event will be skipped, if there is any today.</p>
+  <p>In the last field "Name" you can change the name which will be displayed for this node into your flow.</p>
+
+  <h3><span style="color: #4675c2">Input</span></h3>
+  <p>You can use the input to trigger events manually. The keywords are listed below.</p>
+  <ul>
+    <li><p><b>checkTrashschedule</b> returns next trashschedule event</p></li>
+    <li><p><b>checkNextThree</b> returns next three trashschedule events</p></li>
+  </ul>
+
+  <h3><span style="color: #4675c2">Output</span></h3>
+  <p>Every day at 00:01 o'clock the node returns the next trashschedule event.</p>
+  <ul>
+    <li><p><b>name</b> the name you've chosen for this event</p></li>
+    <li><p><b>day</b> event's day</p></li>
+    <li><p><b>month</b> event's month</p></li>
+    <li><p><b>year</b> event's year</p></li>
+  </ul>
 </script>
 
 <script type="text/javascript">

@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable func-names */
+// eslint-disable-next-line func-names
 module.exports = function (RED) {
   function trashschedule(config) {
     RED.nodes.createNode(this, config);
@@ -142,22 +142,16 @@ module.exports = function (RED) {
       }
     }
 
-    // set interval to update time and send trashschedule event at 00:01 o'clock
-    const dailyInterval = setInterval(() => {
-      setCurrentDate();
-      if (currentHour === 0 && currentMinute === 1) {
-        checkTrashschedule();
-      }
-    });
-
     // listen to node's input
     this.on('input', (msg) => {
       const payload = msg.payload;
       switch (payload) {
         case 'checkTrashschedule':
+          // eslint-disable-next-line no-use-before-define
           checkTrashschedule();
           break;
         case 'checkNextThree':
+          // eslint-disable-next-line no-use-before-define
           sendNextThreeTrashEvents();
           break;
         default:
@@ -165,9 +159,21 @@ module.exports = function (RED) {
       }
     });
 
+    const dailyInterval = setInterval(() => {
+      setCurrentDate();
+      if (currentHour === 15 && currentMinute === 30) {
+        checkTrashschedule();
+      }
+    }, 60000);
+
+    const setTimeInterval = setInterval(() => {
+      setCurrentDate();
+    });
+
     // listen wether node has been closed
     this.on('close', () => {
       clearInterval(dailyInterval);
+      clearInterval(setTimeInterval);
     });
   }
   RED.nodes.registerType('trashschedule', trashschedule);
