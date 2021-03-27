@@ -1,9 +1,40 @@
 <!DOCTYPE html>
 <script type="text/html" data-template-name="trashschedule">
+  <hr>
+
+  <ol id="list" class="list"></ol>
+
+  <hr>
+
   <div class="form-row">
-    <label for="node-input-csvString"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-csvString" placeholder="ics">
-  </div>
+    <label for="node-input-skipHour"><i class="fa fa-clock-o"></i> Skip current day after hour x</label>
+    <i class="fa fa-calendar"></i> <select style="width: 50px;" id="node-input-skipHour">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+    </select>
+</div>
 
   <hr>
 
@@ -14,23 +45,135 @@
 </script>
 
 <script type="text/html" data-help-name="trashschedule">
+  <h3><span style="color: #4675c2">Details</span></h3>
+  <p>The <b>node-red-contrib-trashschedule</b> Node is the ultimative Node to manage your Trashschedule events.</p>
+  <p>Please make sure that you've picked the right timezone into your system settings. Otherwise this node won't work as expected.</p>
+
+  <h3><span style="color: #4675c2">Settings</span></h3>
+  <p>Add your trashschedule events into the list.</p>
+  <ul>
+    <li><p><b>1. field</b> event day (1-31)</p></li>
+    <li><p><b>2. field</b> event month (1-12)</p></li>
+    <li><p><b>3. field</b> event year (yyyy example: 2021)</p></li>
+    <li><p><b>4. field</b> event name</p></li>
+  </ul>
+  <p>Pick the hour after which you want to skip todays trashschedule event in "skip current day after hour x" dropdown.</p>
+  <p>The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.</p>
+
+  <h3><span style="color: #4675c2">Input</span></h3>
+  <p>You can use the input to trigger events manually. The keywords are listed below.</p>
+  <ul>
+    <li><p><b>checkTrashschedule</b> returns next trashschedule event</p></li>
+    <li><p><b>checkNextThree</b> returns next three trashschedule events</p></li>
+  </ul>
+
+  <h3><span style="color: #4675c2">Output</span></h3>
+  <p>Every day at 00:01 o'clock the node returns the next trashschedule event.</p>
+  <ul>
+    <li><p><b>name</b> the name you've chosen for this event</p></li>
+    <li><p><b>day</b> event's day</p></li>
+    <li><p><b>month</b> event's month</p></li>
+    <li><p><b>year</b> event's year</p></li>
+  </ul>
 </script>
 
 <script type="text/javascript">
   RED.nodes.registerType('trashschedule', {
     category: 'calendar',
-    color: "#339900",
-    inputLabels: "",
-    outputLabels: "",
+    color: '#4675c2',
+    inputLabels: '',
+    outputLabels: '',
     inputs: 1,
     outputs: 1,
-    icon: "icon.png",
+    icon: 'icon.svg',
     defaults: {
-      name: { value: "Trash Schedule", required: true },
-      csvString: { value: "", required: true },
+      name: { value: 'Trash Schedule', required: true },
+      trashschedule: { value: [], required: false },
+      skipHour: { value: 12, required: true },
     },
     label: function () {
-      return this.name || "feiertage";
+      return this.name || 'feiertage';
+    },
+    oneditprepare: function () {
+      const node = this;
+
+      $('#list').editableList({
+        sortable: true,
+        sort: function (dataA, dataB) {
+          return dataA.index - dataB.index;
+        },
+        addButton: true,
+        height: 500,
+        addItem: function (containerRow, index, data) {
+          containerRow.css({ overflow: 'hidden', whiteSpace: 'nowrap' });
+          const row = $('<div/>').appendTo(containerRow);
+          const day = $('<input/>', {
+            class: 'node-input-item-day',
+            width: '50px',
+            type: 'number',
+            value: (data.day || '1'),
+            required: true,
+          }).appendTo(row);
+          const month = $('<input/>', {
+            class: 'node-input-item-month',
+            width: '50px',
+            type: 'number',
+            value: (data.month || '1'),
+            required: true,
+          }).appendTo(row);
+          const year = $('<input/>', {
+            class: 'node-input-item-year',
+            width: '80px',
+            type: 'number',
+            value: (data.year || '2021'),
+            required: true,
+          }).appendTo(row);
+          const name = $('<input/>', {
+            class: 'node-input-item-name',
+            type: 'text',
+            value: (data.name || ''),
+            required: true,
+          }).appendTo(row);
+          saveHolidays(node);
+        },
+        removable: true,
+      });
+
+      loadTrashschedule(node);
+    },
+    oneditsave: function () {
+      const node = this;
+
+      saveTrashschedule(node);
     },
   });
+
+  function getData(rule) {
+    return {
+      name: rule.find('.node-input-item-name').val(),
+      day: parseInt(rule.find('.node-input-item-day').val() <= 31 && parseInt(rule.find('.node-input-item-day').val() >= 1 ? parseInt(rule.find('.node-input-item-day').val()) : 1)),
+      month: parseInt(rule.find('.node-input-item-month').val() <= 12 && parseInt(rule.find('.node-input-item-month').val() >= 1 ? parseInt(rule.find('.node-input-item-month').val()) : 1)),
+      year: parseInt(rule.find('.node-input-item-year').val() >= 1 ? parseInt(rule.find('.node-input-item-year').val()) : new Date().getFullYear()),
+    };
+  }
+
+  function saveTrashschedule(node) {
+    node.trashschedule = [];
+    const trashscheduleArr = $('#list').editableList('items');
+    if (trashscheduleArr) {
+      trashscheduleArr.each(function (_i) {
+        const rule = this;
+        node.trashschedule.push(getData(rule));
+      });
+    }
+    console.log(node.trashschedule);
+  }
+
+  function loadTrashschedule(node) {
+    if (node.trashschedule) {
+      node.trashschedule.forEach(item => {
+        $('#list').editableList('addItem', item);
+      });
+    }
+  }
 </script>
