@@ -161,7 +161,7 @@ module.exports = function (RED) {
 
     const dailyInterval = setInterval(() => {
       setCurrentDate();
-      if (currentHour === 15 && currentMinute === 30) {
+      if (currentHour === 0 && currentMinute === 1) {
         checkTrashschedule();
       }
     }, 60000);

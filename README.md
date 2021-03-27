@@ -7,7 +7,9 @@
 
 [![NPM](https://nodei.co/npm/node-red-contrib-trashschedule.png?compact=true)](https://nodei.co/npm/node-red-contrib-trashschedule/)
 
-The Node Red **Trashschedule** node is the ultimate node to create your own Trash Schedule.
+The **node-red-contrib-trashschedule** Node is the ultimative Node to manage your Trashschedule events.
+
+Please make sure that you've picked the right timezone into your system settings!
 
 ## Installation
 ```
@@ -15,9 +17,27 @@ npm install node-red-contrib-trashschedule
 ```
 
 ## Node Description
+### Settings
+Add your trashschedule events into the list.
+
+![list_example](img/list_example.PNG)
+
+|Field|                              |
+|----|-------------------------------|
+|1   |event day (1-31)               |
+|2   |event month (1-12)             |
+|3   |event year (yyyy example: 2021)|
+|4   |event name                     |
+
+The field "skip current day after hour x" means the hour after which the current trashschedule event will be skipped, if there is any today.
+
+![skip_example](img/skip_example.PNG)
+
+The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.
+
 ### Input
 You can use the input to trigger events manually. The keywords are listed below.
-|msg.payload             |outout                               |
+|msg.payload             |output                               |
 |------------------------|-------------------------------------|
 |```checkTrashschedule```|return next trashschedule event      |
 |```checkNextThree```    |return next three trashschedule event|
@@ -37,5 +57,5 @@ It returns the trashschedule events as an object.
 
 You can import this example into your Node Red flow.
 ```
-[{"id":"7c6bb6b3.1d4648","type":"trashschedule","z":"f250d57e.bf23e8","name":"Trash Schedule","trashschedule":[{"name":"Restmüll","day":4,"month":1,"year":2021},{"name":"Biotonne","day":11,"month":1,"year":2021},{"name":"Papier","day":13,"month":1,"year":2021},{"name":"Restmüll","day":18,"month":1,"year":2021},{"name":"Biotonne","day":25,"month":1,"year":2021},{"name":"Restmüll","day":1,"month":2,"year":2021},{"name":"Biotonne","day":8,"month":2,"year":2021},{"name":"Papiertonne","day":10,"month":2,"year":2021},{"name":"Restmüll","day":15,"month":2,"year":2021},{"name":"Biotonne","day":22,"month":2,"year":2021},{"name":"Restmüll","day":1,"month":3,"year":2021},{"name":"Biotonne","day":8,"month":3,"year":2021},{"name":"Papiertonne","day":10,"month":3,"year":2021},{"name":"Restmüll","day":15,"month":3,"year":2021},{"name":"Biotonne","day":22,"month":3,"year":2021},{"name":"Restmüll","day":27,"month":3,"year":2021},{"name":"Biotonne","day":6,"month":4,"year":2021},{"name":"Papier","day":8,"month":4,"year":2021},{"name":"Restmüll","day":12,"month":4,"year":2021},{"name":"Biotonne","day":19,"month":4,"year":2021},{"name":"Restmüll","day":26,"month":4,"year":2021},{"name":"Biotonne","day":3,"month":5,"year":2021},{"name":"Papier","day":5,"month":5,"year":2021},{"name":"Restmüll","day":10,"month":5,"year":2021},{"name":"Biotonne","day":17,"month":5,"year":2021},{"name":"Restmüll","day":25,"month":5,"year":2021},{"name":"Biotonne","day":31,"month":5,"year":2021},{"name":"Papier","day":2,"month":6,"year":2021},{"name":"Restmüll","day":7,"month":6,"year":2021},{"name":"Biotonne","day":14,"month":6,"year":2021},{"name":"Restmüll","day":21,"month":6,"year":2021},{"name":"Biotonne","day":28,"month":6,"year":2021},{"name":"Papier","day":30,"month":6,"year":2021},{"name":"Restmüll","day":5,"month":7,"year":2021},{"name":"Biotonne","day":12,"month":7,"year":2021},{"name":"Restmüll","day":19,"month":7,"year":2021},{"name":"Biotonne","day":26,"month":7,"year":2021},{"name":"Papier","day":28,"month":7,"year":2021},{"name":"Restmüll","day":2,"month":8,"year":2021},{"name":"Biotonne","day":9,"month":8,"year":2021},{"name":"Restmüll","day":16,"month":8,"year":2021},{"name":"Biotonne","day":23,"month":8,"year":2021},{"name":"Papier","day":25,"month":8,"year":2021},{"name":"Restmüll","day":30,"month":8,"year":2021},{"name":"Biotonne","day":6,"month":9,"year":2021},{"name":"Restmüll","day":13,"month":9,"year":2021},{"name":"Biotonne","day":20,"month":9,"year":2021},{"name":"Papier","day":22,"month":9,"year":2021},{"name":"Restmüll","day":27,"month":9,"year":2021},{"name":"Biotonne","day":4,"month":10,"year":2021},{"name":"Restmüll","day":11,"month":10,"year":2021},{"name":"Biotonne","day":18,"month":10,"year":2021},{"name":"Papier","day":20,"month":10,"year":2021},{"name":"Restmüll","day":25,"month":10,"year":2021},{"name":"Biotonne","day":2,"month":11,"year":2021},{"name":"Restmüll","day":8,"month":11,"year":2021},{"name":"Biotonne","day":15,"month":11,"year":2021},{"name":"Papier","day":17,"month":11,"year":2021},{"name":"Restmüll","day":22,"month":11,"year":2021},{"name":"Biotonne","day":29,"month":11,"year":2021},{"name":"Restmüll","day":6,"month":12,"year":2021},{"name":"Biotonne","day":13,"month":12,"year":2021},{"name":"Papiertonne","day":15,"month":12,"year":2021},{"name":"Restmüll","day":18,"month":12,"year":2021},{"name":"Biotonne","day":27,"month":12,"year":2021}],"skipHour":"10","x":480,"y":80,"wires":[["659846ef.d72b68"]]},{"id":"a3b15fe2.252e08","type":"inject","z":"f250d57e.bf23e8","name":"","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"checkTrashschedule","payloadType":"str","x":270,"y":60,"wires":[["7c6bb6b3.1d4648"]]},{"id":"659846ef.d72b68","type":"debug","z":"f250d57e.bf23e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":650,"y":80,"wires":[]},{"id":"c79e0225.2138d8","type":"inject","z":"f250d57e.bf23e8","name":"","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"checkNextThree","payloadType":"str","x":280,"y":100,"wires":[["7c6bb6b3.1d4648"]]}]
+[{"id":"a3b15fe2.252e08","type":"inject","z":"f250d57e.bf23e8","name":"","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"checkTrashschedule","payloadType":"str","x":270,"y":60,"wires":[["b751037f.2da518"]]},{"id":"659846ef.d72b68","type":"debug","z":"f250d57e.bf23e8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":650,"y":80,"wires":[]},{"id":"c79e0225.2138d8","type":"inject","z":"f250d57e.bf23e8","name":"","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"checkNextThree","payloadType":"str","x":280,"y":100,"wires":[["b751037f.2da518"]]},{"id":"b751037f.2da518","type":"trashschedule","z":"f250d57e.bf23e8","name":"Trash Schedule","trashschedule":[{"name":"Hausmüll","day":2,"month":1,"year":2021},{"name":"Gelber Sack","day":8,"month":1,"year":2021},{"name":"Hausmüll","day":15,"month":1,"year":2021},{"name":"Altpapier","day":20,"month":1,"year":2021},{"name":"Gelber Sack","day":22,"month":1,"year":2021},{"name":"Hausmüll","day":29,"month":1,"year":2021},{"name":"Gelber Sack","day":5,"month":2,"year":2021},{"name":"Hausmüll","day":12,"month":2,"year":2021},{"name":"Altpapier","day":17,"month":2,"year":2021},{"name":"Gelber Sack","day":19,"month":2,"year":2021}],"skipHour":12,"x":480,"y":80,"wires":[["659846ef.d72b68"]]}]
 ```
