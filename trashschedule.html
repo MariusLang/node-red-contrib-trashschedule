@@ -57,7 +57,7 @@
     <li><p><b>3. field</b> event year (yyyy example: 2021)</p></li>
     <li><p><b>4. field</b> event name</p></li>
   </ul>
-  <p>Pick the hour after which you want to skip todays trashschedule event in "skip current day after hour x" dropdown.</p>
+  <p>Select the hour until the trashschedule event will be displayed in "skip current day after hour x" dropdown menu.</p>
   <p>The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.</p>
 
   <h3><span style="color: #4675c2">Input</span></h3>
@@ -68,13 +68,14 @@
   </ul>
 
   <h3><span style="color: #4675c2">Output</span></h3>
-  <p>Every day at 00:01 o'clock the node returns the next trashschedule event.</p>
+  <p>Every hour at minute 1 (00:01, 01:01, ..., 15:01, ...) the node returns the next trashschedule event. It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".</p>
   <ul>
     <li><p><b>name</b> the name you've chosen for this event</p></li>
     <li><p><b>day</b> event's day</p></li>
     <li><p><b>month</b> event's month</p></li>
     <li><p><b>year</b> event's year</p></li>
   </ul>
+  <p><b>For more informations click <a href="https://github.com/MariusLang/node-red-contrib-trashschedule">here</a>!</b></p>
 </script>
 
 <script type="text/javascript">

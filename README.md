@@ -43,7 +43,7 @@ You can use the input to trigger events manually. The keywords are listed below.
 |```checkNextThree```    |return next three trashschedule event|
 
 ### Output
-Every day at 00:01 o'clock the node returns the next trashschedule event.
+Every hour at minute 1 (00:01, 01:01, ..., 15:01, ...) the node returns the next trashschedule event.
 It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".
 |key |value                 |
 |----|----------------------|
