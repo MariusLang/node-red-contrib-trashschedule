@@ -116,7 +116,9 @@ module.exports = function (RED) {
             && trashscheduleMonth === currentMonth
             && trashscheduleDay === currentDay) {
             if (currentHour < skipHour) {
+              // first event
               if (validateEvent(trashscheduleElement)) {
+                // set days left
                 trashscheduleElement.daysleft = 0;
 
                 outputArr[0] = trashscheduleElement;
@@ -124,7 +126,9 @@ module.exports = function (RED) {
                 outputArr[0] = 'Trashschedule events outdated';
               }
 
+              // second event
               if (validateEvent(trashschedule[index + 1])) {
+                // calculate days left
                 trashschedule[index + 1].daysleft = Math.round((new Date(
                   trashschedule[index + 1].year,
                   trashschedule[index + 1].month,
@@ -140,7 +144,9 @@ module.exports = function (RED) {
                 outputArr[1] = 'Trashschedule events outdated';
               }
 
+              // third event
               if (validateEvent(trashschedule[index + 2])) {
+                // calculate days left
                 trashschedule[index + 2].daysleft = Math.round((new Date(
                   trashschedule[index + 2].year,
                   trashschedule[index + 2].month,
@@ -158,7 +164,9 @@ module.exports = function (RED) {
 
               break;
             } else {
+              // first event
               if (validateEvent(trashschedule[index + 1])) {
+                // calculate days left
                 trashschedule[index + 1].daysleft = Math.round((new Date(
                   trashschedule[index + 1].year,
                   trashschedule[index + 1].month - 1,
@@ -174,7 +182,9 @@ module.exports = function (RED) {
                 outputArr[0] = 'Trashschedule events outdated';
               }
 
+              // second event
               if (validateEvent(trashschedule[index + 2])) {
+                // calculate days left
                 trashschedule[index + 2].daysleft = Math.round((new Date(
                   trashschedule[index + 2].year,
                   trashschedule[index + 2].month - 1,
@@ -190,7 +200,9 @@ module.exports = function (RED) {
                 outputArr[1] = 'Trashschedule events outdated';
               }
 
+              // third event
               if (validateEvent(trashschedule[index + 3])) {
+                // calculate days left
                 trashschedule[index + 3].daysleft = Math.round((new Date(
                   trashschedule[index + 3].year,
                   trashschedule[index + 3].month - 1,
@@ -209,7 +221,9 @@ module.exports = function (RED) {
               break;
             }
           } else {
+            // first event
             if (validateEvent(trashscheduleElement)) {
+              // calculate days left
               trashscheduleElement.daysleft = Math.round((new Date(
                 trashscheduleYear,
                 trashscheduleMonth,
@@ -225,7 +239,9 @@ module.exports = function (RED) {
               outputArr[0] = 'Trashschedule events outdated';
             }
 
+            // second event
             if (validateEvent(trashschedule[index + 1])) {
+              // calculate days left
               trashschedule[index + 1].daysleft = Math.round((new Date(
                 trashschedule[index + 1].year,
                 trashschedule[index + 1].month,
@@ -241,7 +257,9 @@ module.exports = function (RED) {
               outputArr[1] = 'Trashschedule events outdated';
             }
 
+            // third event
             if (validateEvent(trashschedule[index + 2])) {
+              // calculate days left
               trashschedule[index + 2].daysleft = Math.round((new Date(
                 trashschedule[index + 2].year,
                 trashschedule[index + 2].month,
@@ -278,6 +296,7 @@ module.exports = function (RED) {
         const trashscheduleYear = trashscheduleElement.year;
         const trashscheduleMonth = trashscheduleElement.month - 1;
         const trashscheduleDay = trashscheduleElement.day;
+        // detect latest event
         if (new Date(
           trashscheduleYear,
           trashscheduleMonth,
@@ -287,13 +306,16 @@ module.exports = function (RED) {
           currentMonth,
           currentDay,
         ).valueOf() >= 0) {
+          // detect wether event is tody
           if (trashscheduleYear === currentYear
             && trashscheduleMonth === currentMonth
             && trashscheduleDay === currentDay) {
+            // check skipHour
             if (currentHour < skipHour) {
               trashscheduleElement.daysLeft = 0;
               node.send({ payload: trashscheduleElement });
               break;
+            // validate next event
             } else if (validateEvent(trashschedule[index + 1])) {
               trashschedule[index + 1].daysleft = Math.round((new Date(
                 trashschedule[index + 1].year,
