@@ -44,7 +44,7 @@ You can use the input to trigger events manually. The keywords are listed below.
 
 ### Output
 Every day at 00:01 o'clock the node returns the next trashschedule event.
-It returns the trashschedule events as an object.
+It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".
 |key |value                 |
 |----|----------------------|
 |name|the name you've chosen|
