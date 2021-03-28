@@ -29,7 +29,7 @@ Add your trashschedule events into the list.
 |3   |event year (yyyy example: 2021)|
 |4   |event name                     |
 
-Select the hour until the trashschedule event is displayed.
+Select the hour until the trashschedule event will be displayed.
 
 ![skip_example](img/skip_example.PNG)
 
