@@ -22,12 +22,12 @@ Add your trashschedule events into the list.
 
 ![list_example](img/list_example.PNG)
 
-|Field|                              |
-|----|-------------------------------|
-|1   |event day (1-31)               |
-|2   |event month (1-12)             |
-|3   |event year (yyyy example: 2021)|
-|4   |event name                     |
+|field|required input                 |
+|-----|-------------------------------|
+|1    |event day (1-31)               |
+|2    |event month (1-12)             |
+|3    |event year (yyyy example: 2021)|
+|4    |event name                     |
 
 Select the hour until the trashschedule event will be displayed.
 
