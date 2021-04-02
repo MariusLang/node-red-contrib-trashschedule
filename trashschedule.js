@@ -321,13 +321,14 @@ module.exports = function (RED) {
           break;
         default:
           checkTrashschedule();
+          sendNextThreeTrashEvents();
           break;
       }
     });
 
     const dailyInterval = setInterval(() => {
       setCurrentDate();
-      if (currentMinute === 1) {
+      if (currentMinute === 0) {
         checkTrashschedule();
       }
     }, 60000);
