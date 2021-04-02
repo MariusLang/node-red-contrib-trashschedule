@@ -22,14 +22,14 @@ Add your trashschedule events into the list.
 
 ![list_example](img/list_example.PNG)
 
-|Field|                              |
-|----|-------------------------------|
-|1   |event day (1-31)               |
-|2   |event month (1-12)             |
-|3   |event year (yyyy example: 2021)|
-|4   |event name                     |
+|field|required input                 |
+|-----|-------------------------------|
+|1    |event day (1-31)               |
+|2    |event month (1-12)             |
+|3    |event year (yyyy example: 2021)|
+|4    |event name                     |
 
-Select the hour until the trashschedule event is displayed.
+Select the hour until the trashschedule event will be displayed.
 
 ![skip_example](img/skip_example.PNG)
 
@@ -43,8 +43,8 @@ You can use the input to trigger events manually. The keywords are listed below.
 |```checkNextThree```    |return next three trashschedule event|
 
 ### Output
-Every day at 00:01 o'clock the node returns the next trashschedule event.
-It returns the trashschedule events as an object.
+Every hour at minute 1 (00:01, 01:01, ..., 15:01, ...) the node returns the next trashschedule event.
+It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".
 |key |value                 |
 |----|----------------------|
 |name|the name you've chosen|
