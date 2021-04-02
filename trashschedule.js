@@ -243,7 +243,7 @@ module.exports = function (RED) {
           }
         }
       }
-      node.send({ payload: outputArr });
+      node.send([null, { payload: outputArr }]);
     }
 
     // check wether today is trashschedule event
@@ -272,7 +272,7 @@ module.exports = function (RED) {
             // check skipHour
             if (currentHour < skipHour) {
               trashscheduleElement.daysLeft = 0;
-              node.send({ payload: trashscheduleElement });
+              node.send([{ payload: trashscheduleElement }, null]);
               break;
               // validate next event
             } else if (validateEvent(trashschedule[index + 1])) {
@@ -286,10 +286,10 @@ module.exports = function (RED) {
                 currentDay,
               ).valueOf()) / 86400000);
 
-              node.send({ payload: trashschedule[index + 1] });
+              node.send([{ paload: trashschedule[index + 1] }, null]);
               break;
             } else {
-              node.send({ payload: 'Trashschedule events outdated' });
+              node.send([{ payload: 'Trashschedule events outdated' }, { payload: 'Trashschedule events outdated' }]);
             }
           } else {
             trashscheduleElement.daysLeft = Math.round((new Date(
@@ -302,7 +302,7 @@ module.exports = function (RED) {
               currentDay,
             ).valueOf()) / 86400000);
 
-            node.send({ payload: trashscheduleElement });
+            node.send([{ payload: trashscheduleElement }, null]);
             break;
           }
         }
