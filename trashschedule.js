@@ -330,6 +330,7 @@ module.exports = function (RED) {
       setCurrentDate();
       if (currentMinute === 0) {
         checkTrashschedule();
+        sendNextThreeTrashEvents();
       }
     }, 60000);
 

@@ -1,4 +1,4 @@
-![banner](img/trashschedule_banner.svg)
+![banner](/img/trashschedule_banner.svg)
 # Node Red Trash Schedule
 
 [![NPM](https://img.shields.io/npm/v/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
@@ -20,7 +20,7 @@ npm install node-red-contrib-trashschedule
 ### Settings
 Add your trashschedule events into the list.
 
-![list_example](img/list_example.PNG)
+![list_example](/img/list_example.PNG)
 
 |field|required input                 |
 |-----|-------------------------------|
@@ -31,7 +31,7 @@ Add your trashschedule events into the list.
 
 Select the hour until the trashschedule event will be displayed.
 
-![skip_example](img/skip_example.PNG)
+![skip_example](/img/skip_example.PNG)
 
 The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.
 
@@ -43,8 +43,10 @@ You can use the input to trigger events manually. The keywords are listed below.
 |```checkNextThree```    |return next three trashschedule event|
 
 ### Output
-Every hour the node returns the next trashschedule event.
+Every hour the node returns the next trashschedule event (output 1) and next three trashschedule events (output 2).
 It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".
+The next three trashschedule events are packed into an array.
+
 |key  |value                 |
 |-----|----------------------|
 |name |event's name          |
@@ -53,7 +55,7 @@ It returns the trashschedule events as an object. If there isn't a trashschedule
 |year |event's year          |
 
 ## Example Flow
-![flow_example](img/flow_example.PNG)
+![flow_example](/img/flow_example.PNG)
 
 You can import this example into your Node Red flow.
 ```
