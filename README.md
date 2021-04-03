@@ -45,12 +45,12 @@ You can use the input to trigger events manually. The keywords are listed below.
 ### Output
 Every hour the node returns the next trashschedule event.
 It returns the trashschedule events as an object. If there isn't a trashschedule event available you will receive the payload "Trashschedule events outdated".
-|key |value                 |
-|----|----------------------|
-|name|event's name          |
-|day |event's day           |
-|month|event's month        |
-|year|event's year          |
+|key  |value                 |
+|-----|----------------------|
+|name |event's name          |
+|day  |event's day           |
+|month|event's month         |
+|year |event's year          |
 
 ## Example Flow
 ![flow_example](img/flow_example.PNG)
