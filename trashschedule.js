@@ -56,8 +56,9 @@ module.exports = function (RED) {
       return true;
     }
 
+    // calculate daysLeft
     function calcDaysLeft(trashscheduleElement) {
-      trashscheduleElement.daysLeft = Math.round((new Date(
+      const daysLeft = Math.round((new Date(
         trashscheduleElement.year,
         trashscheduleElement.month - 1,
         trashscheduleElement.day,
@@ -66,7 +67,7 @@ module.exports = function (RED) {
         currentMonth,
         currentDay,
       ).valueOf()) / 86400000);
-      return trashscheduleElement.daysLeft;
+      return daysLeft;
     }
 
     // send next three trashschedule events related to current date
@@ -109,15 +110,7 @@ module.exports = function (RED) {
                 // second event
                 if (validateEvent(trashschedule[index + 1])) {
                   // calculate days left
-                  trashschedule[index + 1].daysLeft = Math.round((new Date(
-                    trashschedule[index + 1].year,
-                    trashschedule[index + 1].month - 1,
-                    trashschedule[index + 1].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 1].daysLeft = calcDaysLeft(trashschedule[index + 1]);
 
                   outputArr[1] = trashschedule[index + 1];
                 } else {
@@ -127,15 +120,7 @@ module.exports = function (RED) {
                 // third event
                 if (validateEvent(trashschedule[index + 2])) {
                   // calculate days left
-                  trashschedule[index + 2].daysLeft = Math.round((new Date(
-                    trashschedule[index + 2].year,
-                    trashschedule[index + 2].month - 1,
-                    trashschedule[index + 2].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 2].daysLeft = calcDaysLeft(trashschedule[index + 2]);
 
                   outputArr[2] = trashschedule[index + 2];
                 } else {
@@ -147,15 +132,7 @@ module.exports = function (RED) {
                 // first event
                 if (validateEvent(trashschedule[index + 1])) {
                   // calculate days left
-                  trashschedule[index + 1].daysLeft = Math.round((new Date(
-                    trashschedule[index + 1].year,
-                    trashschedule[index + 1].month - 1,
-                    trashschedule[index + 1].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 1].daysLeft = calcDaysLeft(trashschedule[index + 1]);
 
                   outputArr[0] = trashschedule[index + 1];
                 } else {
@@ -165,15 +142,7 @@ module.exports = function (RED) {
                 // second event
                 if (validateEvent(trashschedule[index + 2])) {
                   // calculate days left
-                  trashschedule[index + 2].daysLeft = Math.round((new Date(
-                    trashschedule[index + 2].year,
-                    trashschedule[index + 2].month - 1,
-                    trashschedule[index + 2].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 2].daysLeft = calcDaysLeft(trashschedule[index + 2]);
 
                   outputArr[1] = trashschedule[index + 2];
                 } else {
@@ -183,15 +152,7 @@ module.exports = function (RED) {
                 // third event
                 if (validateEvent(trashschedule[index + 3])) {
                   // calculate days left
-                  trashschedule[index + 3].daysLeft = Math.round((new Date(
-                    trashschedule[index + 3].year,
-                    trashschedule[index + 3].month - 1,
-                    trashschedule[index + 3].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 3].daysLeft = calcDaysLeft(trashschedule[index + 3]);
 
                   outputArr[2] = trashschedule[index + 3];
                 } else {
@@ -204,15 +165,7 @@ module.exports = function (RED) {
               // first event
               if (validateEvent(trashscheduleElement)) {
                 // calculate days left
-                trashscheduleElement.daysLeft = Math.round((new Date(
-                  trashscheduleYear,
-                  trashscheduleMonth,
-                  trashscheduleDay,
-                ).valueOf() - new Date(
-                  currentYear,
-                  currentMonth,
-                  currentDay,
-                ).valueOf()) / 86400000);
+                trashscheduleElement.daysLeft = calcDaysLeft(trashscheduleElement);
 
                 outputArr[0] = trashscheduleElement;
               } else {
@@ -222,15 +175,7 @@ module.exports = function (RED) {
               // second event
               if (validateEvent(trashschedule[index + 1])) {
                 // calculate days left
-                trashschedule[index + 1].daysLeft = Math.round((new Date(
-                  trashschedule[index + 1].year,
-                  trashschedule[index + 1].month - 1,
-                  trashschedule[index + 1].day,
-                ).valueOf() - new Date(
-                  currentYear,
-                  currentMonth,
-                  currentDay,
-                ).valueOf()) / 86400000);
+                trashschedule[index + 1].daysLeft = calcDaysLeft(trashschedule[index + 1]);
 
                 outputArr[1] = trashschedule[index + 1];
               } else {
@@ -240,15 +185,7 @@ module.exports = function (RED) {
               // third event
               if (validateEvent(trashschedule[index + 2])) {
                 // calculate days left
-                trashschedule[index + 2].daysLeft = Math.round((new Date(
-                  trashschedule[index + 2].year,
-                  trashschedule[index + 2].month - 1,
-                  trashschedule[index + 2].day,
-                ).valueOf() - new Date(
-                  currentYear,
-                  currentMonth,
-                  currentDay,
-                ).valueOf()) / 86400000);
+                trashschedule[index + 2].daysLeft = calcDaysLeft(trashschedule[index + 2]);
 
                 outputArr[2] = trashschedule[index + 2];
               } else {
@@ -309,15 +246,7 @@ module.exports = function (RED) {
               } else {
                 if (validateEvent(trashschedule[index + 1])) {
                   // calculate days left
-                  trashschedule[index + 1].daysLeft = Math.round((new Date(
-                    trashschedule[index + 1].year,
-                    trashschedule[index + 1].month - 1,
-                    trashschedule[index + 1].day,
-                  ).valueOf() - new Date(
-                    currentYear,
-                    currentMonth,
-                    currentDay,
-                  ).valueOf()) / 86400000);
+                  trashschedule[index + 1].daysLeft = calcDaysLeft(trashschedule[index + 1]);
 
                   node.send([{ payload: trashschedule[index + 1] }, null]);
                 } else {
@@ -329,15 +258,7 @@ module.exports = function (RED) {
             } else {
               if (validateEvent(trashscheduleElement)) {
                 // calculate days left
-                trashscheduleElement.daysLeft = Math.round((new Date(
-                  trashscheduleYear,
-                  trashscheduleMonth,
-                  trashscheduleDay,
-                ).valueOf() - new Date(
-                  currentYear,
-                  currentMonth,
-                  currentDay,
-                ).valueOf()) / 86400000);
+                trashscheduleElement.daysLeft = calcDaysLeft(trashscheduleElement);
 
                 node.send([{ payload: trashscheduleElement }, null]);
               } else {
