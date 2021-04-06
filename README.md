@@ -1,4 +1,4 @@
-![banner](/img/trashschedule_banner.svg)
+![banner](img/trashschedule_banner.svg)
 # Node Red Trash Schedule
 
 [![NPM](https://img.shields.io/npm/v/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
@@ -20,7 +20,7 @@ npm install node-red-contrib-trashschedule
 ### Settings
 Add your trashschedule events into the list.
 
-![list_example](/img/list_example.PNG)
+![list_example](img/list_example.PNG)
 
 |field|required input                 |
 |-----|-------------------------------|
@@ -31,7 +31,7 @@ Add your trashschedule events into the list.
 
 Select the hour until the trashschedule event will be displayed.
 
-![skip_example](/img/skip_example.PNG)
+![skip_example](img/skip_example.PNG)
 
 The last field "Name" gives the possibility to change the name which will be displayed for this node into your flow.
 
@@ -55,7 +55,7 @@ The next three trashschedule events are packed into an array.
 |year |event's year          |
 
 ## Example Flow
-![flow_example](/img/flow_example.PNG)
+![flow_example](img/flow_example.PNG)
 
 You can import this example into your Node Red flow.
 ```
