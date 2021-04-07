@@ -1,15 +1,15 @@
 {
   "name": "node-red-contrib-trashschedule",
-  "version": "0.8.7",
+  "version": "1.0.4",
   "deprecated": false,
-  "description": "NodeRED module to manage trash schedule events",
+  "description": "NodeRED Node to manage trash schedule events",
   "node-red": {
     "nodes": {
       "trashschedule": "trashschedule.js"
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ""
   },
   "keywords": [
     "node-red",
@@ -35,5 +35,6 @@
   "bugs": {
     "url": "https://github.com/MariusLang/node-red-contrib-trashschedule/issues"
   },
-  "homepage": "https://github.com/MariusLang/node-red-contrib-trashschedule#readme"
+  "homepage": "https://github.com/MariusLang/node-red-contrib-trashschedule#readme",
+  "dependencies": {}
 }
