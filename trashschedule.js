@@ -6,7 +6,9 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     const node = this;
 
-    const trashschedule = config.trashschedule;
+    let trashschedule = [];
+
+    trashschedule = config.trashschedule;
     const skipHour = config.skipHour;
 
     let currentDay; // current day 1 - 31
