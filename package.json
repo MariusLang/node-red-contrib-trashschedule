@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-trashschedule",
-  "version": "1.2.1",
+  "version": "1.1.5",
   "deprecated": false,
   "description": "NodeRED Node to manage trash schedule events",
   "node-red": {
