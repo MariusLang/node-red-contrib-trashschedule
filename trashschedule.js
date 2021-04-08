@@ -1,14 +1,17 @@
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-destructuring */
 // eslint-disable-next-line func-names
+
+const validateEvent = require('./src/validateEvent');
+const sortTrashschedule = require('./src/sortTrashschedule');
+
+// eslint-disable-next-line func-names
 module.exports = function (RED) {
   function trashschedule(config) {
     RED.nodes.createNode(this, config);
     const node = this;
 
-    let trashschedule = [];
-
-    trashschedule = config.trashschedule;
+    let trashschedule = config.trashschedule;
     const skipHour = config.skipHour;
 
     let currentDay; // current day 1 - 31
@@ -27,37 +30,6 @@ module.exports = function (RED) {
       currentMinute = date.getMinutes();
     }
 
-    // sort trashschedule array by yyyy, mm, dd
-    function sortTrashschedule() {
-      trashschedule.sort((a, b) => {
-        if (new Date(a.year, a.month, a.day) > new Date(b.year, b.month, b.day)) {
-          return 1;
-        }
-        if (new Date(a.year, a.month, a.day) < new Date(b.year, b.month, b.day)) {
-          return -1;
-        }
-        return 0;
-      });
-    }
-
-    function validateEvent(trashscheduleElement) {
-      if (trashscheduleElement == null) {
-        return false;
-      }
-      if (new Date(
-        trashscheduleElement.year,
-        trashscheduleElement.month,
-        trashscheduleElement.day,
-      ).valueOf() - new Date(
-        currentYear,
-        currentMonth,
-        currentDay,
-      ).valueOf() < 0) {
-        return false;
-      }
-      return true;
-    }
-
     // calculate daysLeft
     function calcDaysLeft(trashscheduleElement) {
       const daysLeft = Math.round((new Date(
@@ -74,7 +46,8 @@ module.exports = function (RED) {
 
     // send next three trashschedule events related to current date
     function sendNextThreeTrashEvents() {
-      sortTrashschedule();
+      // sort trashschedule array by yyyy, mm, dd
+      trashschedule = sortTrashschedule(trashschedule);
 
       // outputArr bundles the 3 events
       const outputArr = [];
@@ -209,7 +182,8 @@ module.exports = function (RED) {
 
     // check wether today is trashschedule event
     function checkTrashschedule() {
-      sortTrashschedule();
+      // sort trashschedule array by yyyy, mm, dd
+      trashschedule = sortTrashschedule(trashschedule);
 
       // check wether trashschedule array contains trashschedule events
       if (trashschedule.length > 0) {
@@ -286,6 +260,10 @@ module.exports = function (RED) {
           break;
         case 'checkNextThree':
           sendNextThreeTrashEvents();
+          break;
+        case '123':
+          trashschedule = sortTrashschedule(trashschedule);
+          node.send({ payload: trashschedule });
           break;
         default:
           checkTrashschedule();
