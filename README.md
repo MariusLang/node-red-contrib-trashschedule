@@ -4,6 +4,7 @@
 [![NPM](https://img.shields.io/npm/v/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
 [![NPM_downloads](https://img.shields.io/npm/dm/node-red-contrib-trashschedule)](https://www.npmjs.com/package/node-red-contrib-trashschedule)
 [![issues](https://img.shields.io/github/issues/mariuslang/node-red-contrib-trashschedule)](https://github.com/MariusLang/node-red-contrib-trashschedule/issues)
+[![Node.js CI](https://github.com/MariusLang/node-red-contrib-trashschedule/actions/workflows/test.yml/badge.svg)](https://github.com/MariusLang/node-red-contrib-trashschedule/actions/workflows/test.yml)
 
 [![NPM](https://nodei.co/npm/node-red-contrib-trashschedule.png?compact=true)](https://nodei.co/npm/node-red-contrib-trashschedule/)
 
