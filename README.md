@@ -42,6 +42,7 @@ You can use the input to trigger events manually. The keywords are listed below.
 |------------------------|-------------------------------------|
 |```checkTrashschedule```|return next trashschedule event      |
 |```checkNextThree```    |return next three trashschedule event|
+|```all```               |return all trashschedule event       |
 
 ### Output
 Every hour the node returns the next trashschedule event (output 1) and next three trashschedule events (output 2).
