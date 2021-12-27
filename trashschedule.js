@@ -44,6 +44,14 @@ module.exports = function (RED) {
       return daysLeft;
     }
 
+    // send all trashschedule events related to current date
+    function sendAllEvents() {
+      // sort trashschedule array by yyyy, mm, dd
+      trashschedule = sortTrashschedule(trashschedule);
+
+      node.send([null, null, { payload: trashschedule }]);
+    }
+
     // send next three trashschedule events related to current date
     function sendNextThreeTrashEvents() {
       // sort trashschedule array by yyyy, mm, dd
@@ -177,7 +185,7 @@ module.exports = function (RED) {
         outputArr[1] = 'Trashschedule events outdated';
         outputArr[2] = 'Trashschedule events outdated';
       }
-      node.send([null, { payload: outputArr }]);
+      node.send([null, { payload: outputArr }, null]);
     }
 
     // check wether today is trashschedule event
@@ -213,9 +221,9 @@ module.exports = function (RED) {
                   // set days left
                   trashscheduleElement.daysLeft = 0;
 
-                  node.send([{ payload: trashscheduleElement }, null]);
+                  node.send([{ payload: trashscheduleElement }, null, null]);
                 } else {
-                  node.send([{ payload: 'Trashschedule events outdated' }, null]);
+                  node.send([{ payload: 'Trashschedule events outdated' }, null, null]);
                 }
 
                 break;
@@ -224,9 +232,9 @@ module.exports = function (RED) {
                   // calculate days left
                   trashschedule[index + 1].daysLeft = calcDaysLeft(trashschedule[index + 1]);
 
-                  node.send([{ payload: trashschedule[index + 1] }, null]);
+                  node.send([{ payload: trashschedule[index + 1] }, null, null]);
                 } else {
-                  node.send([{ payload: 'Trashschedule events outdated' }, null]);
+                  node.send([{ payload: 'Trashschedule events outdated' }, null, null]);
                 }
 
                 break;
@@ -236,9 +244,9 @@ module.exports = function (RED) {
                 // calculate days left
                 trashscheduleElement.daysLeft = calcDaysLeft(trashscheduleElement);
 
-                node.send([{ payload: trashscheduleElement }, null]);
+                node.send([{ payload: trashscheduleElement }, null, null]);
               } else {
-                node.send([{ payload: 'Trashschedule events outdated' }, null]);
+                node.send([{ payload: 'Trashschedule events outdated' }, null, null]);
               }
 
               break;
@@ -247,7 +255,7 @@ module.exports = function (RED) {
         }
       } else {
         // trashschedule array is empty
-        node.send([{ payload: 'Trashschedule events outdated' }, null]);
+        node.send([{ payload: 'Trashschedule events outdated' }, null, null]);
       }
     }
 
@@ -261,13 +269,13 @@ module.exports = function (RED) {
         case 'checkNextThree':
           sendNextThreeTrashEvents();
           break;
-        case '123':
-          trashschedule = sortTrashschedule(trashschedule);
-          node.send({ payload: trashschedule });
+        case 'all':
+          sendAllEvents();
           break;
         default:
           checkTrashschedule();
           sendNextThreeTrashEvents();
+          sendAllEvents();
           break;
       }
     });
@@ -277,6 +285,7 @@ module.exports = function (RED) {
       if (currentMinute === 0) {
         checkTrashschedule();
         sendNextThreeTrashEvents();
+        sendAllEvents();
       }
     }, 60000);
 
